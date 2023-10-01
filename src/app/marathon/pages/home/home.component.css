@@ -1,0 +1,24 @@
+.example-card {
+  margin: 0 auto;
+  width: 50%;
+  text-align: center;
+}
+.card-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.image-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+img{
+  width: 20%;
+  height: auto;
+}

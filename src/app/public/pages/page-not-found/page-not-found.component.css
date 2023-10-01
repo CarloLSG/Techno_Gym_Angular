@@ -1,0 +1,14 @@
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+.not-found-container h1, .not-found-container p {
+  margin: 1px;
+}
+
+.not-found-container button {
+  margin-top: 20px;
+}
