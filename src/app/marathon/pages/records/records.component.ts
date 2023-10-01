@@ -5,6 +5,7 @@ import {Center} from "../../model/center";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {ParticipantsService} from "../../services/participants.service";
+import {CentersService} from "../../services/centers.service";
 
 @Component({
   selector: 'app-records',
@@ -20,12 +21,18 @@ export class RecordsComponent implements OnInit, AfterViewInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private participantService: ParticipantsService) {
+  constructor(private participantService: ParticipantsService, private centersService: CentersService) {
   }
 
   getAllRecords() {
     this.participantService.getAll().subscribe((response: any) =>{
       this.dataSource.data = this.getBestRecordForEachCenter(response);
+    });
+  }
+
+  getCenters(){
+    this.centersService.getAll().subscribe((response: any) =>{
+      this.centers = response;
     });
   }
 
@@ -35,6 +42,7 @@ export class RecordsComponent implements OnInit, AfterViewInit{
   }
   ngOnInit() {
     this.getAllRecords();
+    this.getCenters()
   }
 
   ngAfterViewInit() {
