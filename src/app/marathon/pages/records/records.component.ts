@@ -4,7 +4,6 @@ import {Participant} from "../../model/participant";
 import {Center} from "../../model/center";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {CentersService} from "../../services/centers.service";
 import {ParticipantsService} from "../../services/participants.service";
 
 @Component({
@@ -21,18 +20,12 @@ export class RecordsComponent implements OnInit, AfterViewInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private participantService: ParticipantsService, private centersService: CentersService) {
+  constructor(private participantService: ParticipantsService) {
   }
 
   getAllRecords() {
     this.participantService.getAll().subscribe((response: any) =>{
-      this.dataSource.data = response;
-    });
-  }
-
-  getCenters(){
-    this.centersService.getAll().subscribe((response: any) =>{
-      this.centers = response;
+      this.dataSource.data = this.getBestRecordForEachCenter(response);
     });
   }
 
@@ -41,12 +34,29 @@ export class RecordsComponent implements OnInit, AfterViewInit{
     return center ? center.name : '';
   }
   ngOnInit() {
-    this.getCenters();
     this.getAllRecords();
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  getBestRecordForEachCenter(participants: Participant[]): Participant[] {
+    const bestRecordsMap = new Map<number, Participant>();
+
+    participants.forEach((participant) => {
+      const centerId = participant.centerId;
+      if (!bestRecordsMap.has(centerId)) {
+        bestRecordsMap.set(centerId, participant);
+      } else {
+        const currentBest = bestRecordsMap.get(centerId);
+        if (currentBest && participant.recordTime < currentBest.recordTime) {
+          bestRecordsMap.set(centerId, participant);
+        }
+      }
+    });
+
+    return Array.from(bestRecordsMap.values());
   }
 }
