@@ -1,5 +1,10 @@
 # TechnoGymAngular
 
+ng update
+ng add @angular/material
+ng serve
+json-server --watch db.json --routes routes.json
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
 
 ## Development server
